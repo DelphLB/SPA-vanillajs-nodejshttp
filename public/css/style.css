@@ -1,0 +1,13 @@
+.maincontent {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1000000;
+    background: rgba(0, 245, 245, 0.9);
+    overflow: auto;
+    color: black;
+}
