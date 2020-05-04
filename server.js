@@ -2,8 +2,7 @@ const http = require('http');
 const url = require('url');
 const fs = require('fs');
 const path = require('path');
-const port = process.argv[2] || 9000;
-
+class Server { }
 let mimeTypes = {
     '.html': 'text/html',
     '.js': 'text/javascript',
@@ -13,6 +12,7 @@ let mimeTypes = {
     '.jpg': 'image/jpg',
     '.gif': 'image/gif',
     '.svg': 'image/svg+xml',
+    '.ico': 'image/x-icon',
     '.wav': 'audio/wav',
     '.mp4': 'video/mp4',
     '.woff': 'application/font-woff',
@@ -22,30 +22,27 @@ let mimeTypes = {
     '.wasm': 'application/wasm'
 };
 
+let folderName = 'public'
 let loadedFiles = {}
 
-http.createServer(function (request, response) {
-    console.log('request ', request.url);
-
-    var filePath = './public';
+http.createServer((request, response) => {
+    let filePath = `./${folderName}`
     if (request.url == '/') {
-        filePath += '/index.html';
+        filePath = `./${folderName}/index.html`;
     } else {
-        filePath += request.url
+        filePath += `${request.url}`
     }
+    const extname = String(path.extname(filePath)).toLowerCase();
+    const contentType = mimeTypes[extname] || 'application/octet-stream';
 
-    var extname = String(path.extname(filePath)).toLowerCase();
-
-
-    var contentType = mimeTypes[extname] || 'application/octet-stream';
-
+    console.log('contentType', contentType)
     if (loadedFiles[filePath] != undefined) {
         console.log(filePath + " loaded from cache")
         sendContent(loadedFiles[filePath]);
         return;
     }
 
-    fs.readFile(filePath, function (error, content) {
+    fs.readFile(filePath, (error, content) => {
         if (error) {
             if (error.code == 'ENOENT') {
                 response.writeHead(404);
@@ -60,13 +57,17 @@ http.createServer(function (request, response) {
             loadedFiles[filePath] = content;
             sendContent(content);
         }
+
     });
 
     function sendContent(content) {
-        response.writeHead(200, { 'Content-Type': contentType });
+        response.writeHead(200, {
+            'Content-Type': contentType
+        });
         response.end(content, 'utf-8');
     }
 
-}).listen(8080);
-console.log('Server running at http://127.0.0.1:8080/');
-console.log('Or go to http://localhost:8080/');
+}).listen(8080, () => {
+    console.log('Server running at http://127.0.0.1:8080/');
+    console.log('Or go to http://localhost:8080/');
+});
