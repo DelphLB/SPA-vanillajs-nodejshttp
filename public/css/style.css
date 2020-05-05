@@ -40,7 +40,7 @@ html {
 }
 
 #pop-up {
-    display: none;
+    display: block;
     position: fixed;
     z-index: 1;
     padding-top: 10px;
@@ -62,8 +62,8 @@ h2 {
 #pop-up p {
     overflow: auto;
     max-height: 600px;
+    background: #cccccc;
 }
-
 
 .pop-up-content {
     background-color: #eee;
@@ -77,6 +77,7 @@ h2 {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .pop-up-close :hover,
@@ -90,6 +91,7 @@ h2 {
 .pop-up-ok {
     background-color: #269CE9;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
 
 .pop-up-ok:visited {

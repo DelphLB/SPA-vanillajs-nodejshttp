@@ -53,7 +53,7 @@ http.createServer((request, response) => {
             }
         } else {
             console.log(filePath + " loaded from disk")
-            //cache only text files, ignore all binary files
+            //caching all files (text files & all binary files) 
             loadedFiles[filePath] = content;
             sendContent(content);
         }
